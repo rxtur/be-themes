@@ -1,0 +1,86 @@
+<%@ Master Language="C#" AutoEventWireup="true" CodeFile="site.master.cs" Inherits="StandardSite" %>
+<%@ Import Namespace="BlogEngine.Core" %>
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+
+ <head id="Head1" runat="server">
+    <link href="style.css" rel="stylesheet" type="text/css" />
+    <link href="css/ddsmoothmenu.css" rel="stylesheet" type="text/css" />
+    <script src="<%# Utils.RelativeWebRoot %>themes/boldy/js/ddsmoothmenu.js" type="text/javascript"></script>
+ </head>
+
+ <body onload="setupMenu()">
+<!-- BEGINN MAINWRAPPER -->
+<div id="mainWrapper">
+    <form id="Form1" runat="Server">
+	<!-- BEGIN WRAPPER -->
+    <div id="wrapper">
+		<!-- BEGIN HEADER -->
+        <div id="header">         
+            <div id="logo">
+                <p><a href="<%=Utils.AbsoluteWebRoot %>"><%=BlogSettings.Instance.Name %></a></p>
+                <span><%=BlogSettings.Instance.Description %></span>
+            </div>
+            <!-- BEGIN MAIN MENU -->
+			<div id="mainMenu" class="ddsmoothmenu">
+	            <blog:PageMenu ID="PageMenu1" runat="Server" />
+            </div>
+            <!-- END MAIN MENU -->
+            <!-- BEGIN TOP SEARCH -->
+			<div id="topSearch">
+				<input type="submit" value="" id="searchsubmit" onkeypress="BlogEngine.search('<%=Utils.RelativeWebRoot%>');" onclick="BlogEngine.search('<%=Utils.RelativeWebRoot%>');return false;"/>
+				<input type="text" value="<%=BlogSettings.Instance.SearchDefaultText%>" 
+                    onblur="$(this).animate({width: '100'}, 300 ); BlogEngine.searchClear('<%=BlogSettings.Instance.SearchDefaultText%>')" 
+                    onfocus="$(this).animate({width: '215'}, 300 ); BlogEngine.searchClear('<%=BlogSettings.Instance.SearchDefaultText%>')" 
+                    onkeypress="if(event.keyCode==13) return BlogEngine.search('<%=Utils.RelativeWebRoot%>')" id="searchfield" />
+			</div>
+			<!-- END TOP SEARCH -->
+            <!-- BEGIN TOP SOCIAL LINKS -->
+			<div id="topSocial">
+				<ul>
+					<li><a href="#" class="linkedin" title="Join us on LinkedIn!"><img runat="server" src="~/themes/Boldy/images/ico_linkedin.png" alt="LinkedIn" /></a></li>
+					<li><a href="#" class="twitter" title="Follow Us on Twitter!"><img runat="server" src="~/themes/Boldy/images/ico_twitter.png" alt="Follow Us on Twitter!" /></a></li>
+					<li><a href="#" class="twitter" title="Join Us on Facebook!"><img runat="server" src="~/themes/Boldy/images/ico_facebook.png" alt="Join Us on Facebook!" /></a></li>
+					<li><a href="http://feeds.feedburner.com/rtur" title="RSS" class="rss"><img runat="server" src="~/themes/Boldy/images/ico_rss.png" alt="Subcribe to Our RSS Feed" /></a></li>
+				</ul>
+			</div>	
+			<!-- END TOP SOCIAL LINKS -->
+        </div>
+        <!-- END HEADER -->
+		<!-- BEGIN CONTENT -->
+		<div id="content"> 
+	        <div id="colLeft">
+                <blog:SearchOnSearch ID="sos" runat="server" />
+                <asp:ContentPlaceHolder ID="cphBody" runat="server" />            
+			</div>
+		    <div id="colRight">
+                <blog:WidgetZone ID="WidgetZone1" runat="server" ZoneName="be_WIDGET_ZONE" />
+			</div>
+		</div>
+	    <!-- END CONTENT -->
+	</div>
+    <!-- END WRAPPER --> 
+	<!-- BEGIN FOOTER -->
+	<div id="footer">
+        <div class="arrowUp"><span><a href="#" onclick="$('html, body').animate({scrollTop:0}, 'slow'); return false;">Top</a></span></div>
+		<div id="footerWidgets">
+			<div id="footerWidgetsInner">
+				<!-- BEGIN FOOTER WIDGET -->
+				<blog:WidgetZone ID="WidgetZone2" runat="server" ZoneName="PageBottom" />
+                <!-- END FOOTER WIDGETS -->					
+			</div>	
+		</div>
+        <!-- BEGIN COPYRIGHT -->
+		<div id="copyright">
+			© <%=DateTime.Now.Year.ToString() %> <a href="<%=Utils.RelativeWebRoot%>"><%=BlogSettings.Instance.Name %></a> &nbsp;&nbsp; Using <a href="http://www.dotnetblogengine.net">blogengine.NET</a> 
+			&nbsp;&nbsp; Original theme by <a href="http://wordpress.site5.net/boldy/"><img id="site5" runat="server" src="~/themes/Boldy/images/site5.png" alt="site5.com" /></a>
+        </div>
+		<!-- END COPYRIGHT -->
+	</div>	
+	<!-- END FOOTER -->
+    </form>
+</div>
+<!-- END MAINWRAPPER -->
+</body>
+</html>
