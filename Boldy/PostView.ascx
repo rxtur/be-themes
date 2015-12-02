@@ -1,20 +1,36 @@
-<%@ Control Language="C#" AutoEventWireup="true" EnableViewState="false" Inherits="BlogEngine.Core.Web.Controls.PostViewBase" %>
-<div class="postItem">
-    <h1><a href="<%=Post.RelativeLink %>"><%=Server.HtmlEncode(Post.Title) %></a></h1>
-    <div class="meta">
-	<%=Post.DateCreated.ToString("d. MMMM yyyy HH:mm") %> by <a href="<%=VirtualPathUtility.ToAbsolute("~/") + "author/" + BlogEngine.Core.Utils.RemoveIllegalCharacters(Post.Author) %>.aspx"><%=Post.AuthorProfile != null ? Post.AuthorProfile.DisplayName : Post.Author %></a>
-	in <%=CategoryLinks(", ") %>&nbsp;&nbsp;//&nbsp;&nbsp;Tags: <%=TagLinks(", ") %>&nbsp;&nbsp;//&nbsp;&nbsp;
-    <% if (BlogEngine.Core.BlogSettings.Instance.ModerationType == BlogEngine.Core.BlogSettings.Moderation.Disqus)
-       { %>
-    <a rel="nofollow" href="<%=Post.PermaLink %>#disqus_thread"><%=Resources.labels.comments %></a>
-    <%}
-       else
-       { %>
-    <a rel="nofollow" href="<%=Post.RelativeLink %>#comment"><%=Resources.labels.comments %> (<%=Post.ApprovedComments.Count %>)</a>   
-    <%} %>
-    </div>
-    <asp:PlaceHolder ID="BodyContent" runat="server" />
-    <div class="adminLinks">
+﻿<%@ Control Language="C#" AutoEventWireup="true" EnableViewState="false" Inherits="BlogEngine.Core.Web.Controls.PostViewBase" %>
+<%@ Import Namespace="BlogEngine.Core"%>
+<% if (Location != ServingLocation.SinglePost){%>
+<article class="post post-home" id="post<%=Index %>">
+<%} %>
+<% if (Location == ServingLocation.SinglePost){%>
+<article class="post" id="post<%=Index %>">
+<%} %>
+    <header class="post-header">
+        <h2 class="post-title">
+            <a href="<%=Post.RelativeOrAbsoluteLink %>"><%=Server.HtmlEncode(Post.Title) %></a>
+        </h2>
+        <div class="post-info clearfix">
+            <span class="post-date"><i class="icon-calendar"></i><%=Post.DateCreated.ToString("dd MMMM yyyy hh:mm") %></span>
+            <span class="post-author"><i class=" icon-user"></i>
+                <a href="<%=Utils.AbsoluteWebRoot + "author/" + Utils.RemoveIllegalCharacters(Post.Author) + BlogConfig.FileExtension %>">
+               <%=Post.AuthorProfile != null ? Post.AuthorProfile.DisplayName : Post.Author %></a>
+             </span>
+            <span class="post-category"><i class=" icon-folder"></i><%=CategoryLinks(", ") %></span>
+            <a rel="nofollow" class="pull-right post-comment-link" href="<%=Post.RelativeOrAbsoluteLink %>#comment">
+                <i class="glyphicon glyphicon-comment"></i>(<%=Post.ApprovedComments.Count %>)
+            </a>   
+        </div>
+    </header>
+    <section class="post-body text">
+        <asp:PlaceHolder ID="BodyContent" runat="server" />
         <%=AdminLinks %>
-    </div>
-</div>
+    </section>
+    <% if (Location == ServingLocation.SinglePost){%>
+    <footer class="post-footer">
+        <div class="post-tags">
+            <i class="icon-tags"></i> <%=TagLinks(", ") %>
+        </div>
+    </footer>
+    <%} %>
+</article>

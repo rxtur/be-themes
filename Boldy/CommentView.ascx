@@ -1,26 +1,21 @@
-<%@ Control Language="C#" EnableViewState="False" Inherits="BlogEngine.Core.Web.Controls.CommentViewBase" %>
-
-<div id="id_<%=Comment.Id %>" class="vcard comment<%= Post.Author.Equals(Comment.Author, StringComparison.OrdinalIgnoreCase) ? " self" : "" %>">
-    <div class="commentHdrContainer">
-	    <div class="commentHdr">
-		    <div class="commentHdrContent">
-			    <div class="innertube">
-                    <%= ReplyToLink %>
-                    
+﻿<%@ Control Language="C#" EnableViewState="False" Inherits="BlogEngine.Core.Web.Controls.CommentViewBase" %>
+<ul id="id_<%=Comment.Id %>" class="media-list">
+    <li class="media comment-item">
+        <div class="float-left comment-gravatar <%= Post.Author.Equals(Comment.Author, StringComparison.OrdinalIgnoreCase) ? " self" : "" %>"><%= Gravatar(72)%> <div class="carrow"></div></div>
+        <div class="media-body">
+            <div class="comment-content <%= Post.Author.Equals(Comment.Author, StringComparison.OrdinalIgnoreCase) ? " self" : "" %>">
+                <div class="comment-header clearfix">
+                    <h4 class="media-heading float-left"><%= Comment.Website != null ? "<a href=\"" + Comment.Website + "\" rel=\"nofollow\" class=\"url fn\">" + Comment.Author + "</a>" : "<span class=\"fn\">" +Comment.Author + "</span>" %></h4>
+                    <small class="float-right text-muted text-uppercase"><%= Comment.DateCreated  %> |  <%=ReplyToLink%> </small>
                 </div>
-		    </div>
-	    </div>
-	    <div class="commentHdrLeftCol">
-		    <span class="gvt-img"><%= Gravatar(38)%></span>
-	    </div>
-	    <div class="commentHdrRightCol">
-            <span class="commentAuthor"><%= Comment.Website != null ? "<a href=\"" + Comment.Website + "\" rel=\"nofollow\" class=\"url fn\">" + Comment.Author + "</a>" : "<span class=\"fn\">" +Comment.Author + "</span>" %></span>
-            <br/><%= Comment.DateCreated %> <a href="#id_<%=Comment.Id %>">#</a>
-	    </div>
-    </div>
-    <p class="commenttext"><%= Text %></p>
-    <%= AdminLinks.StartsWith(" | ") ? AdminLinks.Substring(3, AdminLinks.Length - 3) : AdminLinks %>
-    <div class="comment-replies" id="replies_<%=Comment.Id %>" <%= (Comment.Comments.Count == 0) ? " style=\"display:none;\"" : "" %>>
-	    <asp:PlaceHolder ID="phSubComments" runat="server" />
-    </div>
-</div>
+                <p><%= Text %></p>
+                <div class="text-right reply-to">
+                    <%= AdminLinks.Length > 2 ? AdminLinks.Substring(2) : AdminLinks %>
+                </div>
+            </div>
+            <div class="media" id="replies_<%=Comment.Id %>" <%= (Comment.Comments.Count == 0 || Comment.Email == "pingback" || Comment.Email == "trackback") ? " style=\"display:none;\"" : "" %>>
+                <asp:PlaceHolder ID="phSubComments" runat="server" />
+            </div>
+        </div>
+    </li>
+</ul>
